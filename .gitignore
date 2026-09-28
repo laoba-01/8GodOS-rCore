@@ -1,0 +1,35 @@
+# ===== Rust 构建产物 =====
+target/
+**/target/
+
+# ===== 课程生成的临时目录与评分产物 =====
+tmp/
+**/tmp/
+rank/
+**/rank/
+
+# ===== Rust 杂项 =====
+**/*.rs.bk
+**/*.bk
+*.o
+*.pdb
+*.dSYM/
+
+# ===== Python =====
+__pycache__/
+**/__pycache__/
+*.py[cod]
+
+# ===== 编辑器 / 操作系统 =====
+# 注意：这里故意不忽略 .vscode/
+# 2026a-rustling-laoba-01 跟踪了 .vscode/extensions.json，
+# 而 gitignore 无法从「被排除的目录」里再捞回单个文件。
+.idea/
+*.iml
+*.swp
+*.swo
+*~
+
+.DS_Store
+Thumbs.db
+desktop.ini
