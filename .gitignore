@@ -13,6 +13,8 @@ rank/
 # 提交/推送在各自目录里进行，不归本工作区跟踪。
 # 2026a-rustling-laoba-01 → https://github.com/LearningOS/2026a-rustling-laoba-01
 2026a-rustling-laoba-01/
+# 2026a-oscamp-base-laoba-01 → https://github.com/LearningOS/2026a-oscamp-base-laoba-01
+2026a-oscamp-base-laoba-01/
 
 # ===== Rust 杂项 =====
 **/*.rs.bk
