@@ -8,6 +8,12 @@ tmp/
 rank/
 **/rank/
 
+# ===== 课程作业仓库 =====
+# 这些子目录各自是独立的 git 仓库（clone 自 LearningOS 的课程仓库），
+# 提交/推送在各自目录里进行，不归本工作区跟踪。
+# 2026a-rustling-laoba-01 → https://github.com/LearningOS/2026a-rustling-laoba-01
+2026a-rustling-laoba-01/
+
 # ===== Rust 杂项 =====
 **/*.rs.bk
 **/*.bk
@@ -21,9 +27,8 @@ __pycache__/
 *.py[cod]
 
 # ===== 编辑器 / 操作系统 =====
-# 注意：这里故意不忽略 .vscode/
-# 2026a-rustling-laoba-01 跟踪了 .vscode/extensions.json，
-# 而 gitignore 无法从「被排除的目录」里再捞回单个文件。
+# 注意：这里故意不忽略 .vscode/——gitignore 无法从「被排除的目录」里
+# 再捞回单个文件。课程仓库（见上）现在自己管自己的 .vscode/。
 .idea/
 *.iml
 *.swp

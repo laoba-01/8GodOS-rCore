@@ -1,1 +1,0 @@
-# Maintainer fallback: one GitHub login per line.
