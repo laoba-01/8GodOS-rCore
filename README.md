@@ -14,6 +14,9 @@
 | [`oscamp-base`](https://github.com/laoba-01/8GodOS-rCore/tree/oscamp-base) | 训练营基础练习（6 个模块） | [LearningOS/2026a-oscamp-base-laoba-01](https://github.com/LearningOS/2026a-oscamp-base-laoba-01) |
 | [`rcore-ch3`](https://github.com/laoba-01/8GodOS-rCore/tree/rcore-ch3) | rCore 实验 lab1（ch3） | [LearningOS/2026a-rcore-laoba-01](https://github.com/LearningOS/2026a-rcore-laoba-01) |
 | [`rcore-ch4`](https://github.com/laoba-01/8GodOS-rCore/tree/rcore-ch4) | rCore 实验 lab2（ch4） | 同上 |
+| [`rcore-ch5`](https://github.com/laoba-01/8GodOS-rCore/tree/rcore-ch5) | rCore 实验 lab3（ch5） | 同上 |
+
+> 命名约定：rCore 的章节分支在本仓库带 `rcore-` 前缀（`rcore-ch3` / `rcore-ch4` / `rcore-ch5`），对应课程仓库里的 `ch3` / `ch4` / `ch5`。找不到 `ch5` 分支时看这里。
 
 本机工作区结构：
 
@@ -51,7 +54,7 @@ Rustlings 形式的语言基础练习，覆盖变量、所有权、错误处理�
 cargo run -p oscamp-cli -- watch    # 交互模式
 ```
 
-### rCore 实验（`rcore-ch3` / `rcore-ch4` 分支）
+### rCore 实验（`rcore-ch3` / `rcore-ch4` / `rcore-ch5` 分支）
 
 在 [rCore-Tutorial](https://github.com/LearningOS/2026a-rcore-laoba-01) 基础上按章节完成的实验，一个章节一个分支：
 
@@ -59,9 +62,11 @@ cargo run -p oscamp-cli -- watch    # 交互模式
 | --- | --- | --- |
 | `rcore-ch3` | ch3 | 系统调用计数 + `sys_trace`（lab1） |
 | `rcore-ch4` | ch4 | 虚存版 `get_time`、`trace`、`mmap`、`munmap`（lab2） |
+| `rcore-ch5` | ch5 | 多核/进程模型上的 `get_time`、`mmap`、`munmap` 迁移，新增 `sys_spawn`（400）与 `sys_set_priority`（140），FIFO 换成 stride 调度（lab3） |
 
-- 实验报告：`reports/lab1.md`、`reports/lab2.md`，分别在对应分支内。
-- 两个章节均已通过课程仓库的 GitHub Actions 评测。
+- 实验报告为**累积式**：`reports/lab1.md`（ch3）、`reports/lab1~2.md`（ch4）、`reports/lab1~3.md`（ch5），每个分支自带到本章为止的全部报告。
+- 三个章节均已通过课程仓库的 GitHub Actions 评测（`configuration` / `Test chapter and reports` / `Save progress and upload score` 全部 success）。
+- lab3 的本地判据：官方 checker `make -C ci-user test CHAPTER=5` 输出 `Test passed: 15/15`，用户态 `ch5_usertest` 打印 `ch5 Usertests passed!`。
 
 ## 环境要求
 
@@ -102,6 +107,6 @@ make -C os run BASE=0
 | --- | --- | --- |
 | `rustling` | [LearningOS/2026a-rustling-laoba-01](https://github.com/LearningOS/2026a-rustling-laoba-01) | MIT (© 2016 Carol Nichols / Goulding) |
 | `oscamp-base` | [LearningOS/2026a-oscamp-base-laoba-01](https://github.com/LearningOS/2026a-oscamp-base-laoba-01) | Apache-2.0 |
-| `rcore-ch3` / `rcore-ch4` | [LearningOS/2026a-rcore-laoba-01](https://github.com/LearningOS/2026a-rcore-laoba-01) | GPL-3.0 |
+| `rcore-ch3` / `rcore-ch4` / `rcore-ch5` | [LearningOS/2026a-rcore-laoba-01](https://github.com/LearningOS/2026a-rcore-laoba-01) | GPL-3.0 |
 
 这些分支中的内容版权归原作者所有，此处仅作个人学习用途。
