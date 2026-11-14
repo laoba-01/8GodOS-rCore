@@ -133,14 +133,55 @@ impl VfsNodeOps for RootDirectory {
     }
 
     fn rename(&self, src_path: &str, dst_path: &str) -> VfsResult {
-        self.lookup_mounted_fs(src_path, |fs, rest_path| {
-            if rest_path.is_empty() {
-                ax_err!(PermissionDenied) // cannot rename mount points
-            } else {
-                fs.root_dir().rename(rest_path, dst_path)
-            }
-        })
-    }
+          self.lookup_mounted_fs(src_path, |fs, src_rest| {
+              if src_rest.is_empty() {
+                  return ax_err!(PermissionDenied); // cannot rename mount points
+              }
+
+              match fs.root_dir().rename(src_rest, dst_path) {
+                  Ok(()) => Ok(()),
+                  Err(AxError::Unsupported) => {
+                      // The backend does not implement rename. Emulate a
+                      // same-directory file rename using basic VFS operations.
+                      self.lookup_mounted_fs(dst_path, |dst_fs, dst_rest| {
+                          if dst_rest.is_empty() || !Arc::ptr_eq(&fs, &dst_fs) {
+                              return ax_err!(Unsupported);
+                          }
+
+                          let src = fs.root_dir().lookup(src_rest)?;
+                          if src.get_attr()?.is_dir() {
+                              return ax_err!(Unsupported);
+                          }
+
+                          fs.root_dir().create(dst_rest, VfsNodeType::File)?;
+                          let dst = fs.root_dir().lookup(dst_rest)?;
+
+                          let mut buf = [0u8; 4096];
+                          let mut offset = 0u64;
+                          loop {
+                              let n = src.read_at(offset, &mut buf)?;
+                              if n == 0 {
+                                  break;
+                              }
+                              let mut written = 0;
+                              while written < n {
+                                  let w = dst.write_at(offset + written as u64, &buf[written..n])?;
+                                  if w == 0 {
+                                      return ax_err!(BadState);
+                                  }
+                                  written += w;
+                              }
+                              offset += n as u64;
+                          }
+
+                          fs.root_dir().remove(src_rest)?;
+                          Ok(())
+                      })
+                  }
+                  Err(e) => Err(e),
+              }
+          })
+      }
 }
 
 pub(crate) fn init_rootfs(disk: crate::dev::Disk) {
