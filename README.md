@@ -15,8 +15,11 @@
 | [`rcore-ch3`](https://github.com/laoba-01/8GodOS-rCore/tree/rcore-ch3) | rCore 实验 lab1（ch3） | [LearningOS/2026a-rcore-laoba-01](https://github.com/LearningOS/2026a-rcore-laoba-01) |
 | [`rcore-ch4`](https://github.com/laoba-01/8GodOS-rCore/tree/rcore-ch4) | rCore 实验 lab2（ch4） | 同上 |
 | [`rcore-ch5`](https://github.com/laoba-01/8GodOS-rCore/tree/rcore-ch5) | rCore 实验 lab3（ch5） | 同上 |
+| [`rcore-ch6`](https://github.com/laoba-01/8GodOS-rCore/tree/rcore-ch6) | rCore 实验 lab4（ch6） | 同上 |
+| [`rcore-ch8`](https://github.com/laoba-01/8GodOS-rCore/tree/rcore-ch8) | rCore 实验 lab5（ch8） | 同上 |
+| [`arceos`](https://github.com/laoba-01/8GodOS-rCore/tree/arceos) | ArceOS 六题练习 | [LearningOS/2026a-arceos-laoba-01](https://github.com/LearningOS/2026a-arceos-laoba-01) |
 
-> 命名约定：rCore 的章节分支在本仓库带 `rcore-` 前缀（`rcore-ch3` / `rcore-ch4` / `rcore-ch5`），对应课程仓库里的 `ch3` / `ch4` / `ch5`。找不到 `ch5` 分支时看这里。
+> 命名约定：rCore 的章节分支在本仓库带 `rcore-` 前缀（`rcore-ch3` / `rcore-ch4` / `rcore-ch5` / `rcore-ch6` / `rcore-ch8`），对应课程仓库里的 `ch3` / `ch4` / `ch5` / `ch6` / `ch8` 章节；ArceOS 不切章节分支，六题都在课程仓库的 `main` 上完成，个人备份统一叫 `arceos`。
 
 本机工作区结构：
 
@@ -24,10 +27,11 @@
 8godOS-rCore/
 ├── 2026a-rustling-laoba-01/     Rust 语言基础练习
 ├── 2026a-oscamp-base-laoba-01/  训练营基础练习
-└── 2026a-rcore-laoba-01/        rCore 操作系统实验（按章节切分支）
+├── 2026a-rcore-laoba-01/        rCore 操作系统实验（按章节切分支）
+└── 2026a-arceos-laoba-01/       ArceOS 组件化操作系统练习（六题）
 ```
 
-这三个目录各自是独立的课程仓库 clone，不被本仓库跟踪（见 `.gitignore`）。
+这四个目录各自是独立的课程仓库 clone，不被本仓库跟踪（见 `.gitignore`）。
 
 ## 项目说明
 
@@ -54,7 +58,7 @@ Rustlings 形式的语言基础练习，覆盖变量、所有权、错误处理�
 cargo run -p oscamp-cli -- watch    # 交互模式
 ```
 
-### rCore 实验（`rcore-ch3` / `rcore-ch4` / `rcore-ch5` 分支）
+### rCore 实验（`rcore-ch3` / `rcore-ch4` / `rcore-ch5` / `rcore-ch6` / `rcore-ch8` 分支）
 
 在 [rCore-Tutorial](https://github.com/LearningOS/2026a-rcore-laoba-01) 基础上按章节完成的实验，一个章节一个分支：
 
@@ -63,10 +67,29 @@ cargo run -p oscamp-cli -- watch    # 交互模式
 | `rcore-ch3` | ch3 | 系统调用计数 + `sys_trace`（lab1） |
 | `rcore-ch4` | ch4 | 虚存版 `get_time`、`trace`、`mmap`、`munmap`（lab2） |
 | `rcore-ch5` | ch5 | 多核/进程模型上的 `get_time`、`mmap`、`munmap` 迁移，新增 `sys_spawn`（400）与 `sys_set_priority`（140），FIFO 换成 stride 调度（lab3） |
+| `rcore-ch6` | ch6 | 文件系统：`sys_fstat`、`sys_linkat` / `sys_unlinkat`、inode 硬链接计数（lab4） |
+| `rcore-ch8` | ch8 | 线程同步：mutex / sem 的银行家算法死锁检测（lab5） |
 
-- 实验报告为**累积式**：`reports/lab1.md`（ch3）、`reports/lab1~2.md`（ch4）、`reports/lab1~3.md`（ch5），每个分支自带到本章为止的全部报告。
-- 三个章节均已通过课程仓库的 GitHub Actions 评测（`configuration` / `Test chapter and reports` / `Save progress and upload score` 全部 success）。
-- lab3 的本地判据：官方 checker `make -C ci-user test CHAPTER=5` 输出 `Test passed: 15/15`，用户态 `ch5_usertest` 打印 `ch5 Usertests passed!`。
+- 实验报告为**累积式**：`ch3` 带 `lab1.md`，之后每个分支都带从 lab1 到本章的全部报告（`ch8` 为 `lab1~5.md`）。
+- 五个章节均已通过课程仓库的 GitHub Actions 评测（`configuration` / `Test chapter and reports` / `Save progress and upload score` 全部 success）。
+- 官方 checker 本地判据：lab3 `Test passed: 15/15`、lab4 `31/31`、lab5 `25/25`；lab3 的用户态 `ch5_usertest` 打印 `ch5 Usertests passed!`。
+
+### ArceOS 练习（`arceos` 分支）
+
+在 [ArceOS](https://github.com/LearningOS/2026a-arceos-laoba-01) 上完成的六项组件化操作系统练习，全部在课程仓库的 `main` 分支完成：
+
+| 练习 | 内容 | 状态 |
+| --- | --- | --- |
+| `print_with_color` | 让控制台问候语带颜色输出 | ✅ 已完成（100/100） |
+| `ramfs_rename` | 内存文件系统中同目录文件重命名 | 待完成 |
+| `alt_alloc` | 使用替代分配器完成向量分配与排序 | 待完成 |
+| `support_hashmap` | 在内核应用中支持 `HashMap` | 待完成 |
+| `sys_map` | 用户程序映射文件并读回内容 | 待完成 |
+| `simple_hv` | 运行客体内核、处理退出并正常关机 | 待完成 |
+
+- 每题 100 分，满分 600；每次 push `main` 都会重新评测全部六题，并把本次分数上传 OpenCamp（不保留历史最高分）。
+- 2026-11-14 首次评测：`print_with_color` 通过，总分 **100/600**，成绩已上传。
+- 个人仓库的 `arceos` 分支是课程仓库 `main` 的备份，不做章节区分。
 
 ## 环境要求
 
@@ -99,6 +122,19 @@ cd 2026a-rcore-laoba-01
 make -C os run BASE=0
 ```
 
+### ArceOS 练习
+
+- 使用课程提供的 Docker 镜像（Rust `nightly-2024-09-04`、RISC-V musl GCC、QEMU 8.2.2），在课程仓库根目录执行：
+
+```bash
+cd 2026a-arceos-laoba-01
+./scripts/docker.sh
+```
+
+- 单题测试：第一题 `./scripts/test-print.sh`，其余见 `scripts/`；一次测六题用 `./scripts/total-test.sh`，最后一行是总分。
+- 本地测试可加 `QEMU_LOG=n`：Makefile 默认 `QEMU_LOG=y`，会生成几百 MB 的 `arceos/qemu.log`，不影响判据。
+- Windows 建议在 WSL2 中运行课程脚本。
+
 ## 来源与许可
 
 本仓库保存的是以下上游项目的代码快照，各自保留其原始 LICENSE：
@@ -107,6 +143,7 @@ make -C os run BASE=0
 | --- | --- | --- |
 | `rustling` | [LearningOS/2026a-rustling-laoba-01](https://github.com/LearningOS/2026a-rustling-laoba-01) | MIT (© 2016 Carol Nichols / Goulding) |
 | `oscamp-base` | [LearningOS/2026a-oscamp-base-laoba-01](https://github.com/LearningOS/2026a-oscamp-base-laoba-01) | Apache-2.0 |
-| `rcore-ch3` / `rcore-ch4` / `rcore-ch5` | [LearningOS/2026a-rcore-laoba-01](https://github.com/LearningOS/2026a-rcore-laoba-01) | GPL-3.0 |
+| `rcore-ch3` / `rcore-ch4` / `rcore-ch5` / `rcore-ch6` / `rcore-ch8` | [LearningOS/2026a-rcore-laoba-01](https://github.com/LearningOS/2026a-rcore-laoba-01) | GPL-3.0 |
+| `arceos` | [LearningOS/2026a-arceos-laoba-01](https://github.com/LearningOS/2026a-arceos-laoba-01) | Apache-2.0 |
 
 这些分支中的内容版权归原作者所有，此处仅作个人学习用途。
