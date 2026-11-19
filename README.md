@@ -78,17 +78,17 @@ cargo run -p oscamp-cli -- watch    # 交互模式
 
 在 [ArceOS](https://github.com/LearningOS/2026a-arceos-laoba-01) 上完成的六项组件化操作系统练习，全部在课程仓库的 `main` 分支完成：
 
-| 练习 | 内容 | 状态 |
-| --- | --- | --- |
-| `print_with_color` | 让控制台问候语带颜色输出 | ✅ 已完成（100/100） |
-| `ramfs_rename` | 内存文件系统中同目录文件重命名 | 待完成 |
-| `alt_alloc` | 使用替代分配器完成向量分配与排序 | 待完成 |
-| `support_hashmap` | 在内核应用中支持 `HashMap` | 待完成 |
-| `sys_map` | 用户程序映射文件并读回内容 | 待完成 |
-| `simple_hv` | 运行客体内核、处理退出并正常关机 | 待完成 |
+| 练习 | 内容 | 实现要点 | 状态 |
+| --- | --- | --- | --- |
+| `print_with_color` | 让控制台问候语带颜色输出 | ANSI 转义序列 `\x1b[32m` / `\x1b[0m` | ✅ 100/100 |
+| `ramfs_rename` | 内存文件系统中同目录文件重命名 | ramfs 后端不支持 `rename`，在 VFS 的 `RootDirectory::rename` 里用 create / read / write / remove 模拟（限同一文件系统、同一目录、非目录） | ✅ 100/100 |
+| `alt_alloc` | 使用替代分配器完成向量分配与排序 | 实现双端 bump 的 `EarlyAllocator`：字节区从低地址向上、页区从高地址向下，字节区计数归零才回收；`align_pow2` 实为以字节为单位的对齐值；并接上 `alt_axalloc` 的 `add_memory` | ✅ 100/100 |
+| `support_hashmap` | 在内核应用中支持 `HashMap` | 在 `axstd` 中基于 `alloc::vec::Vec` 手写分离链接法 `HashMap`：FNV-1a 哈希 + 随机种子，3/4 负载扩容 | ✅ 100/100 |
+| `sys_map` | 用户程序映射文件并读回内容 | 实现 `sys_mmap`：把 fd 内容读入内存 → 在当前任务地址空间找空闲区（hint 非 0）→ `map_alloc(populate=true)` → 写回映射页并返回虚拟地址 | ✅ 100/100 |
+| `simple_hv` | 运行客体内核、处理退出并正常关机 | 在 HS-mode 捕获并模拟客体的两条指令：`csrr a1, mhartid`（`IllegalInstruction`）与未映射 GPA 上的 `ld a0, 64(zero)`（`LoadGuestPageFault`），置目标寄存器后 `sepc += 4` 继续运行；最后处理 SBI Reset 正常关机 | ✅ 100/100 |
 
 - 每题 100 分，满分 600；每次 push `main` 都会重新评测全部六题，并把本次分数上传 OpenCamp（不保留历史最高分）。
-- 2026-11-14 首次评测：`print_with_color` 通过，总分 **100/600**，成绩已上传。
+- 2026-11-14 首次评测：`print_with_color` 通过（100/600）；2026-11-18 最终评测：六题全部通过，总分 **600/600**，成绩已上传 OpenCamp。
 - 个人仓库的 `arceos` 分支是课程仓库 `main` 的备份，不做章节区分。
 
 ## 环境要求
